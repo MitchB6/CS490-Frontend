@@ -1,20 +1,30 @@
 import React, {useState, useEffect} from 'react'
 
 function App() {
-   const [data, setData] = useState([{}])
+   const [data, setData] = useState("Loading...")
    useEffect(() =>{
-      fetch("/healthcheck").then(
-         res => res.json()
-      ).then(
-         data => {
-            setData(data)
-            console.log(data)
+      fetch("/healthcheck")
+         .then(res => {
+         // res => res.json()
+            if (res.status === 200){
+               return res.json();
+            }else{
+               throw new Error(`Recived status code ${res.status}`)
+            }
+         })
+         .then(data => {
+            setData(data.print)
+            // console.log(data.print)
          }
       )
+      .catch(error => {
+         console.error("Fetch failed:", error)
+         setData("Error")
+      })
    }, [])
   return (
     <div>
-      {(data.print[1])}
+      {(data)}
       {/* <p>{data.results && data.results[0] && data.results[0].output}</p> */}
       {/* test */}
     </div>
