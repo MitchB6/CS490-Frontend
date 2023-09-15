@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react'
 function App() {
    const [data, setData] = useState("Loading...")
    useEffect(() =>{
-      fetch("/healthcheck")
+      fetch("https://main--capable-gumption-8655c3.netlify.app/heathcheck")
          .then(res => {
          // res => res.json()
             if (res.status === 200){
