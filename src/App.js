@@ -3,11 +3,11 @@ import React, {useState, useEffect} from 'react'
 function App() {
    const [data, setData] = useState("Loading...")
    useEffect(() =>{
-      fetch("https://main--capable-gumption-8655c3.netlify.app/healthcheck", 
+      fetch("https://web-production-ee33a.up.railway.app/healthcheck", 
          {method: "get",
-         mode: 'cors',
          headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "main--capable-gumption-8655c3.netlify.app"
          }}
       )
          .then(res => {
@@ -15,6 +15,7 @@ function App() {
             if (res.status === 200){
                return res.json();
             }else{
+               console.log(res)
                throw new Error(`Recived status code ${res.status}`)
             }
          })
