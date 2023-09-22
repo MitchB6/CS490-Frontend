@@ -3,11 +3,11 @@ import React, {useState, useEffect} from 'react'
 function App() {
    const [data, setData] = useState("Loading...")
    useEffect(() =>{
-      fetch("https://web-production-ee33a.up.railway.app/healthcheck", 
+      fetch("http://localhost:5000/healthcheck", 
          {method: "get",
          headers: {
             "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "main--capable-gumption-8655c3.netlify.app"
+            // "Access-Control-Allow-Origin": "main--capable-gumption-8655c3.netlify.app"
          }}
       )
          .then(res => {
