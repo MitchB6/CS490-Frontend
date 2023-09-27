@@ -1,6 +1,8 @@
-.top {
-  text-align: center;
-}
+/* button {
+  position: relative;
+  top: 50%;
+  left: 50%;
+} */
 .row {
   display: flex;
   justify-content: center;

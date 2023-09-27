@@ -3,6 +3,7 @@ import Main from './Main';
 import Customer from './Customer';
 import Movies from './Movies';
 import Reports from './Reports';
+import './styles.css';
 
 function App() {
   const [showMain, setShowMain] = useState(true);
@@ -41,12 +42,12 @@ function App() {
       <button onClick={moviesClickHandler}>Movies</button>
       <button onClick={customerClickHandler}>Customer</button>
       <button onClick={reportsClickHandler}>Reports</button>
-      {showMain && <Main />}
-      {showMovies && <Movies />}
-      {showCustomer && <Customer />}
-      {showReports && <Reports />}
+      {showMain && <Main/>}
+      {showMovies && <Movies/>}
+      {showCustomer && <Customer/>}
+      {showReports && <Reports/>}
     </div>
   );
 }
 
-  export default App
+export default App;
