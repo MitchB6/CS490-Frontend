@@ -1,6 +1,6 @@
-import React , { useState } from 'react'
+import React, { useState, useEffect } from 'react';
 
-const Add = () => {
+const Edit = ({ customer_id }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -11,15 +11,56 @@ const Add = () => {
   const [postal_code, setPostal_code] = useState('');
   const [phone, setPhone] = useState('');
 
+  const [customerData, setCustomerData] = useState({
+    first_name: '',
+    last_name: '',
+    email: '',
+    address_1: '',
+    address_2: '',
+    city: '',
+    district: '',
+    postal_code: '',
+    phone: '',
+    customer_id: null,
+  });
+
+  useEffect(() => {
+    const fetchCustomer = async () => {
+      try {
+        const customerRes = await fetch(`http://localhost:5000/edit_find_customer?customerID=${customer_id}`);
+        if (customerRes.ok) {
+          const customerData = await customerRes.json();
+          setCustomerData(customerData.customer);
+          setFirstName(customerData.customer.first_name);
+          setLastName(customerData.customer.last_name);
+          setEmail(customerData.customer.email);
+          setAddress_1(customerData.customer.address_1);
+          setAddress_2(customerData.customer.address_2);
+          setCity(customerData.customer.city);
+          setDistrict(customerData.customer.district);
+          setPostal_code(customerData.customer.postal_code);
+          setPhone(customerData.customer.phone);
+          // console.log(customerData);
+        } else {
+          throw new Error('Search failed.');
+        }
+      } catch (error) {
+        console.error('Search failed:', error);
+      }
+    };
+    fetchCustomer();
+  }, [customer_id]);
+
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/add_customer', {
+      const response = await fetch('http://localhost:5000/edit_customer', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          customer_id: customer_id,
           first_name: firstName,
           last_name: lastName,
           email: email,
@@ -33,20 +74,43 @@ const Add = () => {
       });
       if (response.ok) {
         const jsonResponse = await response.json();
-        // console.log(jsonResponse.customer);
-        console.log(jsonResponse.status)
+        // console.log(jsonResponse);
+        console.log(jsonResponse.status, jsonResponse.customer)
         window.location.reload();
       } else {
-        throw new Error('Add failed.');
+        throw new Error('Edit failed.');
       }
     } catch (error) {
-      console.error('Add failed:', error);
+      console.error('Edit failed:', error);
+    }    
+  };
+  const deleteClickHandler = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await fetch('http://localhost:5000/delete_customer', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          customer_id: customer_id,
+        }),
+      });
+      if (response.ok) {
+        const jsonResponse = await response.json();
+        console.log(jsonResponse);
+        window.location.reload();
+      } else {
+        throw new Error('Delete failed.');
+      }
+    } catch (error) {
+      console.error('Delete failed:', error);
     }
   };
 
   return (
     <div>
-      <h3>Add User</h3>
+      <h3>Edit User</h3>
       <form onSubmit={handleFormSubmit}>
         <div>
           <label htmlFor="firstName">First Name: </label>
@@ -65,7 +129,7 @@ const Add = () => {
             <label htmlFor="address_1">Address: </label>
             <input type="text" value={address_1} onChange={(event) => setAddress_1(event.target.value)} placeholder="1234 Main St" required />
             <label htmlFor="address_2">Address 2: </label>
-            <input type="text" value={address_2} onChange={(event) => setAddress_2(event.target.value)} />
+            <input type="text" value={address_2 || ''} onChange={(event) => setAddress_2(event.target.value)} />
             <label htmlFor="city">City: </label>
             <input type="text" value={city} onChange={(event) => setCity(event.target.value)} placeholder="Vineland" required />
             <label htmlFor="district">District:</label>
@@ -74,14 +138,15 @@ const Add = () => {
             <input type="text" value={postal_code} onChange={(event) => setPostal_code(event.target.value)} placeholder="12345" required />
           </div>
           <label htmlFor="phone">Phone: </label>
-          <input type="text" value={phone} onChange={(event) => setPhone(event.target.value)} placeholder="123-456-7890" required />
+          <input type="text" value={phone} onChange={(event) => setPhone(event.target.value)} required />
         </div>
-        <div>
+        <p>
           <button type="submit">Submit</button>
-        </div>
+          <button type="button" onClick={deleteClickHandler}>Delete</button>
+        </p>
       </form>
     </div>
   );
 };
 
-export default Add
+export default Edit;
