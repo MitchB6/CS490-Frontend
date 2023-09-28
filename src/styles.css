@@ -1,6 +1,8 @@
-.top {
-  text-align: center;
-}
+/* button {
+  position: relative;
+  top: 50%;
+  left: 50%;
+} */
 .row {
   display: flex;
   justify-content: center;
@@ -9,8 +11,4 @@
 }
 .row h2 {
   margin: 0 25px 0 25px;
-}
-a {
-  text-decoration: none;
-  color: black;
 }
