@@ -10,6 +10,7 @@ const Edit = ({ customer_id }) => {
   const [district, setDistrict] = useState('');
   const [postal_code, setPostal_code] = useState('');
   const [phone, setPhone] = useState('');
+  const [rentedMovies, setRentedMovies] = useState([]);
 
   const [customerData, setCustomerData] = useState({
     first_name: '',
@@ -99,7 +100,7 @@ const Edit = ({ customer_id }) => {
       if (response.ok) {
         const jsonResponse = await response.json();
         console.log(jsonResponse);
-        window.location.reload();
+        // window.location.reload();
       } else {
         throw new Error('Delete failed.');
       }
@@ -110,41 +111,80 @@ const Edit = ({ customer_id }) => {
 
   return (
     <div>
-      <h3>Edit User</h3>
-      <form onSubmit={handleFormSubmit}>
-        <div>
-          <label htmlFor="firstName">First Name: </label>
-          <input type="text" value={firstName} onChange={(event) => setFirstName(event.target.value)} placeholder="Joy" required />
-        </div>
-        <div>
-          <label htmlFor="lastName">Last Name: </label>
-          <input type="text" value={lastName} onChange={(event) => setLastName(event.target.value)} placeholder="Burton" required />
-        </div>
-        <div>
-          <label htmlFor="email">E-Mail: </label>
-          <input type="text" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="joy_burton@aol.com" required />
-        </div>
-        <div>
+      <div>
+        <h3>Edit User</h3>
+        <form onSubmit={handleFormSubmit}>
           <div>
-            <label htmlFor="address_1">Address: </label>
-            <input type="text" value={address_1} onChange={(event) => setAddress_1(event.target.value)} placeholder="1234 Main St" required />
-            <label htmlFor="address_2">Address 2: </label>
-            <input type="text" value={address_2 || ''} onChange={(event) => setAddress_2(event.target.value)} />
-            <label htmlFor="city">City: </label>
-            <input type="text" value={city} onChange={(event) => setCity(event.target.value)} placeholder="Vineland" required />
-            <label htmlFor="district">District:</label>
-            <input type="text" value={district} onChange={(event) => setDistrict(event.target.value)} placeholder="New Jersey" required />
-            <label htmlFor="postal_code">Zip Code</label>
-            <input type="text" value={postal_code} onChange={(event) => setPostal_code(event.target.value)} placeholder="12345" required />
+            <label htmlFor="firstName">First Name: </label>
+            <input type="text" value={firstName} onChange={(event) => setFirstName(event.target.value)} placeholder="Joy" required />
           </div>
-          <label htmlFor="phone">Phone: </label>
-          <input type="text" value={phone} onChange={(event) => setPhone(event.target.value)} required />
-        </div>
-        <p>
-          <button type="submit">Submit</button>
-          <button type="button" onClick={deleteClickHandler}>Delete</button>
-        </p>
-      </form>
+          <div>
+            <label htmlFor="lastName">Last Name: </label>
+            <input type="text" value={lastName} onChange={(event) => setLastName(event.target.value)} placeholder="Burton" required />
+          </div>
+          <div>
+            <label htmlFor="email">E-Mail: </label>
+            <input type="text" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="joy_burton@aol.com" required />
+          </div>
+          <div>
+            <div>
+              <label htmlFor="address_1">Address: </label>
+              <input type="text" value={address_1} onChange={(event) => setAddress_1(event.target.value)} placeholder="1234 Main St" required />
+              <label htmlFor="address_2">Address 2: </label>
+              <input type="text" value={address_2 || ''} onChange={(event) => setAddress_2(event.target.value)} />
+              <label htmlFor="city">City: </label>
+              <input type="text" value={city} onChange={(event) => setCity(event.target.value)} placeholder="Vineland" required />
+              <label htmlFor="district">District:</label>
+              <input type="text" value={district} onChange={(event) => setDistrict(event.target.value)} placeholder="New Jersey" required />
+              <label htmlFor="postal_code">Zip Code</label>
+              <input type="text" value={postal_code} onChange={(event) => setPostal_code(event.target.value)} placeholder="12345" required />
+            </div>
+            <label htmlFor="phone">Phone: </label>
+            <input type="text" value={phone} onChange={(event) => setPhone(event.target.value)} required />
+          </div>
+          <p>
+            <button type="submit">Submit</button>
+            <button type="button" onClick={deleteClickHandler}>Delete</button>
+          </p>
+        </form>
+      </div>
+      <div>   {/* <tr> <th> </> <td></> <tr>*/}
+        <h3>Current User Data</h3>
+        <table>
+          <tbody>
+            <tr>
+              <th>First Name</th>
+              <td>{firstName}</td>
+            </tr>
+            <tr>
+              <th>Last Name</th>
+              <td>{lastName}</td>
+            </tr>
+            <tr>
+              <th>E-mail</th>
+              <td>{email}</td>
+            </tr>
+            <tr>
+              <th>Address</th>
+              <td>{address_1} {address_2}</td>
+            </tr>
+            <tr>
+              <th></th>
+              <td>{city}, {district} {postal_code}</td>
+            </tr>
+            <tr>
+              <th>Phone</th>
+              <td>{phone}</td>
+            </tr>
+            <tr>
+              <th>Rented Movies</th>
+            </tr>
+            <tr>
+              
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
