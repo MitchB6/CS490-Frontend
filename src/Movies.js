@@ -4,6 +4,9 @@ function Movies() {
   const [showDetails, setShowDetails] = useState(false);
   const [showMovies, setShowMovies] = useState(true);
 
+  const [customerList, setCustomerList] = useState([]);
+  const [customer_id, setCustomer_id] = useState('');
+
   const [movieList, setMovieList] = useState([]);
   const [search_movie, setSearch_movie] = useState('');
   const [film_id, setFilm_id] = useState('');
@@ -28,7 +31,21 @@ function Movies() {
         console.error("Movie Retrieval Failed:", error);
       }
     };
+    const fetchCustomers = async () => {
+      try{
+        const customersRes = await fetch('http://localhost:5000/customer_search?search_term=');
+        if(customersRes.ok){
+          const customersData = await customersRes.json();
+          setCustomerList(customersData);
+        }else{
+          throw new Error("Customer Retrieval Failed")
+        }
+      }catch(error){
+        console.error("Customer Retrieval Failed:", error);
+      }
+    }
     fetchMovies();
+    fetchCustomers();
   }, [search_movie]);
   const handleMovieClick = () => {
     setShowDetails(true);
@@ -56,6 +73,28 @@ function Movies() {
     setRating('');
     setReplacement_cost('');
   }
+  const handleRent = async (customer_id) => {
+    try{
+      const movieRentalRes = await fetch('http://localhost:5000/rent_movie', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          customer_id: customer_id,
+          film_id: film_id,
+        }),
+      });
+      if(movieRentalRes.ok){
+        const movieRentalData = await movieRentalRes.json();
+        console.log(movieRentalData);
+      }else{
+        throw new Error("Movie Rental Failed");
+      }
+    }catch{
+      console.error("Movie Rental Failed:", Error);
+    }
+  };
   return (
     <div>
       {showMovies &&
@@ -103,6 +142,15 @@ function Movies() {
           <tr>
             <td>Replacement Cost:</td>
             <td>{replacement_cost}</td>
+          </tr>
+          <tr>
+          <td><button onClick={(event) => handleRent(customer_id)}>Rent to</button></td>
+            <td><select onChange={(event) => setCustomer_id(event.target.value)}>
+              {customerList.map((customer) => (
+                <option key={customer[0]} value={customer[0]}>{customer[0]}: {customer[1]} {customer[2]}</option>
+              ))  
+              }
+            </select></td>
           </tr>
         </table>
         <p><button onClick={handleBack}>Back</button></p>

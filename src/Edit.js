@@ -64,7 +64,9 @@ const Edit = ({ customer_id }) => {
     };
     fetchCustomer();
   }, [customer_id]);
-
+  const backHandle = () => {
+    window.location.reload();
+  }
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -158,10 +160,11 @@ const Edit = ({ customer_id }) => {
           <p>
             <button type="submit">Submit</button>
             <button type="button" onClick={deleteClickHandler}>Delete</button>
+            <button type="button" onClick={() => backHandle()}>Back</button>
           </p>
         </form>
       </div>
-      <div>   {/* <tr> <th> </> <td></> <tr>*/}
+      <div>
         <h3>Current User Data</h3>
         <table>
           <tbody>
@@ -191,10 +194,12 @@ const Edit = ({ customer_id }) => {
             </tr>
             <tr>
               <th>Rented Movies</th>
+              <th>Returned?</th>
             </tr>
             {rentedMovies.map((movie) => (
               <tr>
                 <td key={movie[1]}>{movie[0]}</td>
+                <td style={{textAlign: "center", verticalAlign: "middle"}}><input type="checkbox"></input></td>
               </tr>
             ))}
           </tbody>

@@ -11,6 +11,9 @@ const Add = () => {
   const [postal_code, setPostal_code] = useState('');
   const [phone, setPhone] = useState('');
 
+  const backHandle = () => {
+    window.location.reload();
+  }
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -78,6 +81,7 @@ const Add = () => {
         </div>
         <div>
           <button type="submit">Submit</button>
+          <button type="button" onClick={() => backHandle()}>Back</button>
         </div>
       </form>
     </div>
