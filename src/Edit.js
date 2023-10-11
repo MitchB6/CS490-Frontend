@@ -48,6 +48,19 @@ const Edit = ({ customer_id }) => {
       } catch (error) {
         console.error('Search failed:', error);
       }
+      try {
+        const rentedMoviesRes = await fetch(`http://localhost:5000/customer_rented?customer_id=${customer_id}`);
+        if(rentedMoviesRes.ok){
+          const rentedMoviesData = await rentedMoviesRes.json();
+          setRentedMovies(rentedMoviesData);
+          // console.log(rentedMoviesData);
+        } else {
+          throw new Error("Movie Serach Failed")
+        }
+      } catch (error) {
+        console.error('Movie Search Failed:', error);
+      }
+
     };
     fetchCustomer();
   }, [customer_id]);
@@ -179,9 +192,11 @@ const Edit = ({ customer_id }) => {
             <tr>
               <th>Rented Movies</th>
             </tr>
-            <tr>
-              
-            </tr>
+            {rentedMovies.map((movie) => (
+              <tr>
+                <td key={movie[1]}>{movie[0]}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
