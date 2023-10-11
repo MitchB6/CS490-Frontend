@@ -113,9 +113,9 @@ const Edit = ({ customer_id }) => {
         }),
       });
       if (response.ok) {
-        const jsonResponse = await response.json();
-        console.log(jsonResponse);
-        // window.location.reload();
+        // const jsonResponse = await response.json();
+        // console.log(jsonResponse);
+        window.location.reload();
       } else {
         throw new Error('Delete failed.');
       }
@@ -123,6 +123,27 @@ const Edit = ({ customer_id }) => {
       console.error('Delete failed:', error);
     }
   };
+  const initClick = async (movie_id) => {
+    try {
+      const returnClick = await fetch('http://localhost:5000/return_movie', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          customer_id: customer_id,
+          movie_id: movie_id,
+        }),
+      })
+      if (returnClick.ok){
+        console.log("Return Successful");
+      }else{
+        throw new Error('Return failed.');
+      }
+    }catch(error){
+      console.error('Return failed:', error);
+    }
+  }
 
   return (
     <div>
@@ -199,7 +220,13 @@ const Edit = ({ customer_id }) => {
             {rentedMovies.map((movie) => (
               <tr>
                 <td key={movie[1]}>{movie[0]}</td>
-                <td style={{textAlign: "center", verticalAlign: "middle"}}><input type="checkbox"></input></td>
+                <td style={{textAlign: "center", verticalAlign: "middle"}}>
+                  {movie[2] === null ? (
+                    <input type="checkbox" onClick={() => initClick(movie[1])}/>
+                  ) : (
+                    <input type="checkbox" checked readOnly/>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>

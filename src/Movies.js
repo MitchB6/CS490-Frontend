@@ -87,7 +87,7 @@ function Movies() {
       });
       if(movieRentalRes.ok){
         const movieRentalData = await movieRentalRes.json();
-        console.log(movieRentalData);
+        // console.log(movieRentalData);
       }else{
         throw new Error("Movie Rental Failed");
       }
