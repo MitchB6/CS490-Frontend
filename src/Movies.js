@@ -47,18 +47,18 @@ function Movies() {
     fetchMovies();
     fetchCustomers();
   }, [search_movie]);
-  const handleMovieClick = () => {
+  const handleMovieClick = (movie) => {
     setShowDetails(true);
     setShowMovies(false);
 
-    setFilm_id(movieList[0][0]);
-    setTitle(movieList[0][1]);
-    setDescription(movieList[0][2]);
-    setRelease_year(movieList[0][3]);
-    setRental_rate(movieList[0][4]);
-    setLength(movieList[0][5]);
-    setRating(movieList[0][6]);
-    setReplacement_cost(movieList[0][7]);
+    setFilm_id(movie[0]);
+    setTitle(movie[1]);
+    setDescription(movie[2]);
+    setRelease_year(movie[3]);
+    setRental_rate(movie[4]);
+    setLength(movie[5]);
+    setRating(movie[6]);
+    setReplacement_cost(movie[7]);
   }
   const handleBack = () => {
     setShowDetails(false);
@@ -94,6 +94,7 @@ function Movies() {
     }catch{
       console.error("Movie Rental Failed:", Error);
     }
+    window.location.reload();
   };
   return (
     <div>
@@ -103,7 +104,7 @@ function Movies() {
         <input type="text" value={search_movie} onChange={(event) => setSearch_movie(event.target.value)} placeholder="Search for a movie" />
         <table>
           {movieList.map((movie) => (
-            <tr key={movie[0]} onClick={() => handleMovieClick(movie[0])}>{movie[1]}</tr>
+            <tr key={movie[0]} onClick={() => handleMovieClick(movie)}>{movie[1]}</tr>
           ))}
         </table>
       </div>}
